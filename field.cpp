@@ -118,11 +118,15 @@ int Field::generateRandomNumber(int low, int high) {
 }
 
 void Field::generateApple() {
+    if (!isOutOfBounds(apple)) {
+        field[apple.x][apple.y] = EMPTY;
+    }
     Position newApplePosition = generateRandomPosition();
     while (getCellAtPosition(newApplePosition) != EMPTY) {
         newApplePosition = generateRandomPosition();
     }
     apple = newApplePosition;
+    field[apple.x][apple.y] = APPLE;
 }
 
 int **Field::getField() {

@@ -23,6 +23,13 @@ int main() {
     
     int start = clock();
 
+    for (int i = 0; i < field.getSize().sizeX; i++) {
+        for (int j = 0; j < field.getSize().sizeY; j++) {
+            cout << field.getField()[i][j] << " ";
+        }
+        cout << endl;
+    }
+
     while (!dead) {
         field.echo(false);
         snake.writeToField();

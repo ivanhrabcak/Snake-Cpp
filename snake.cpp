@@ -17,6 +17,7 @@ Snake::Snake(Field field) {
     bodyPositions.pop_front();
     currentDirection = UP;
     writeToField();
+    field.generateApple();
 }
 
 void Snake::addLength(int nOfCells) {
@@ -43,11 +44,7 @@ int Snake::move(Direction dir) {
     list<Position> newBodyPositions;
     list<Position>::iterator it;
 
-    Position previousHead = snakeHeadPosition;
-    for (it = bodyPositions.begin(); it != bodyPositions.end(); ++it) {
-        newBodyPositions.push_back(previousHead);
-        previousHead = (Position) {.x = it->x, .y = it->y};
-    }
+    
     
 
     Position newSnakeHeadPosition = snakeHeadPosition;
@@ -79,6 +76,12 @@ int Snake::move(Direction dir) {
 
     for (it = bodyPositions.begin(); it != bodyPositions.end(); ++it) {
         field.getField()[it->x][it->y] = EMPTY;
+    }
+
+    Position previousHead = snakeHeadPosition;
+    for (it = bodyPositions.begin(); it != bodyPositions.end(); ++it) {
+        newBodyPositions.push_back(previousHead);
+        previousHead = (Position) {.x = it->x, .y = it->y};
     }
 
     bodyPositions = newBodyPositions;
