@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <chrono>
 
 #include "field.h"
 #include "time.h"
@@ -8,8 +9,8 @@
 
 using namespace std;
 
-#define SIZEX 15
-#define SIZEY 15
+#define SIZEX 30
+#define SIZEY 30
 #define sizeofarray(x) sizeof(x) / sizeof(x[0]) // unsafe
 
 int main() {
@@ -21,32 +22,25 @@ int main() {
     bool dead;
     Direction *arrowKeysPressed;
     
-    int start = clock();
-
-    for (int i = 0; i < field.getSize().sizeX; i++) {
-        for (int j = 0; j < field.getSize().sizeY; j++) {
-            cout << field.getField()[i][j] << " ";
-        }
-        cout << endl;
-    }
+    // https://stackoverflow.com/questions/23615776/measure-time-milliseconds-or-microseconds-for-windows-c
+    auto start = std::chrono::high_resolution_clock::now();
 
     while (!dead) {
         field.echo(false);
         snake.writeToField();
-        int currentTime =  double(clock() - start) / CLOCKS_PER_SEC * 1000;
+        int currentTime = (std::chrono::high_resolution_clock::now() - start) / std::chrono::milliseconds(1);
         // cout << currentTime << endl;
-        if (currentTime >= 500) {
+        if (currentTime >= 100) {
             dead = snake.move(snake.getCurrentDirection());
             field.clearScreen();
             cout << field.draw();
-            start = clock();
+            start = std::chrono::high_resolution_clock::now();
         }
         arrowKeysPressed = keyboard.getArrowKeysPressed();
         if (!arrowKeysPressed == NULL) {
             snake.setCurrentDirection(arrowKeysPressed[0]);
         }
     }
-    cout << field.draw();
     field.echo(true);
     
 }
